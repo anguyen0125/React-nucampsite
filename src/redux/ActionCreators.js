@@ -85,12 +85,11 @@ export const postComment = (campsiteId, rating, author, text) => dispatch => {
     newComment.date = new Date().toISOString();
 
     return fetch(baseUrl + 'comments', {
-            method: "POST",
-            body: JSON.stringify(newComment),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
+        method: 'POST',
+        body: JSON.stringify(newComment),
+        headers: {
+            'Content-Type': 'application/json',
+        }})
         .then(response => {
                 if (response.ok) {
                     return response;
@@ -184,40 +183,45 @@ export const addPartners = partners => ({
     payload: partners
 });
 
-export const postFeedback = (/*firstName, lastName, phoneNum, email, agree, contactType, */feedback) => {
-    
-    /*const newFeedback = {
-        firstName: firstName,
-        lastName: lastName,
-        phoneNum: phoneNum,
-        email: email,
-        agree: false,
-        contactType: contactType,
-        feedback: feedback
-    };
-    newFeedback.date = new Date().toISOString(); */
-
+export const postFeedback = feedback => () => {
     return fetch(baseUrl + 'feedback', {
-            method: "POST",
-            body: JSON.stringify(feedback),
-            headers: {
-                "Content-Type": "application/json"
+        method: 'POST',
+        body: JSON.stringify(feedback),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+    })
+    .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                const error = new Error(`Error ${response.status}: ${response.statusText}`);
+                error.response = response;
+                throw error;
             }
+        },
+        error => { throw error; })
+        .then(response => response.json())
+        .then(response => { 
+            console.log('Feedback: ', response); 
+            alert('Thank you for your feedback!\n' + JSON.stringify(response));
         })
-        .then(response => {
-                if (response.ok) {
-                    return response;
-                } else {
-                    const error = new Error(`Error ${response.status}: ${response.statusText}`);
-                    error.response = response;
-                    throw error;
-                }
-            },
-            error => { throw error; }
-        )
-        .then(response => alert('Thank you for your feedback!') + response.json())
-        .catch(error => {
-            console.log('post feedback', error.message);
+        .catch(error => { 
+            console.log('Feedback: ', error.message);
             alert('Your feedback could not be posted\nError: ' + error.message);
         });
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+

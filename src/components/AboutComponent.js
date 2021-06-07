@@ -7,16 +7,16 @@ import { Fade, Stagger } from 'react-animation-components';
 
 function About(props) {
 
-    function RenderPartner (item) {
-        if (item) {
+    function RenderPartner ({partner}) {
+        if (partner) {
             return (
                 <React.Fragment>
-                    <Media src={baseUrl + item.image} alt={item.name} width="150" />
+                    <Media src={baseUrl + partner.image} alt={partner.name} width="150" />
                     <Media body className="ml-5 mb-4">
                         <Media heading>
-                            {item.name}
+                            {partner.name}
                         </Media>
-                        {item.description}
+                        {partner.description}
                     </Media>
                 </React.Fragment>
             )
@@ -24,12 +24,12 @@ function About(props) {
         return <div />
     }
 
-    function PartnerList (props, isLoading, errMess) {
+    function PartnerList (props) {
         const partners = props.partners.partners.map(partner => {
             return (
                 <Fade 
                     in 
-                    enterOpacity={0.15} 
+                    enterOpacity={0.85} 
                     key={partner.id}
                 >
                     <Media tag="li" >
@@ -39,13 +39,13 @@ function About(props) {
                 
             );
         });
-        if (isLoading) {
+        if (props.partners.isLoading) {
             return <Loading />;
         };
-        if (errMess) {
+        if (props.partners.errMess) {
             return (
                 <div className="col">
-                    <h4>{errMess}</h4>
+                    <h4>{props.partners.errMess}</h4>
                 </div>
             );
         };
